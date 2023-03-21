@@ -86,6 +86,11 @@ const CRO: Currency = {
   symbol: 'CRO',
   decimals: 18,
 }
+const KAVA: Currency = {
+  name: 'KAVA',
+  symbol: 'KAVA',
+  decimals: 18,
+}
 
 const CHAIN_INFORMATION = new Map<number, ChainInformation | ChainType>([
   [
@@ -472,6 +477,18 @@ const CHAIN_INFORMATION = new Map<number, ChainInformation | ChainType>([
       fullName: 'Cronos Chain',
       shortName: 'Cronos',
       explorerUrl: `https://cronoscan.com`,
+      testnet: false,
+    },
+  ],
+  [
+    2222,
+    {
+      id: 2222,
+      nativeCurrency: KAVA,
+      type: 'main',
+      fullName: 'Kava EVM',
+      shortName: 'KAVA',
+      explorerUrl: `https://explorer.kava.io`,
       testnet: false,
     },
   ],

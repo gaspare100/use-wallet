@@ -319,8 +319,14 @@ function UseWalletProvider({
     }
   }, [account, ethereum])
 
-  const wallet = useMemo(
-    () => ({
+  const wallet = useMemo(() => {
+    let networkName = 'Unknown'
+    try {
+      networkName = chains.getChainInformation(chainId)?.type
+    } catch (e) {
+      console.log('Unsupported network deteƒcted')
+    }
+    return {
       _web3ReactContext: web3ReactContext,
       account: account || null,
       balance,
@@ -331,29 +337,28 @@ function UseWalletProvider({
       error,
       ethereum,
       isConnected: () => status === 'connected',
-      networkName: chains.getChainInformation(chainId).type,
+      networkName: networkName,
       providerInfo: connector
         ? getProviderFromUseWalletId(connector)
         : getProviderFromUseWalletId('unknown'),
       reset,
       status,
       type,
-    }),
-    [
-      account,
-      balance,
-      chainId,
-      connect,
-      connector,
-      connectors,
-      error,
-      ethereum,
-      type,
-      reset,
-      status,
-      web3ReactContext,
-    ]
-  )
+    }
+  }, [
+    account,
+    balance,
+    chainId,
+    connect,
+    connector,
+    connectors,
+    error,
+    ethereum,
+    type,
+    reset,
+    status,
+    web3ReactContext,
+  ])
 
   return (
     <UseWalletContext.Provider

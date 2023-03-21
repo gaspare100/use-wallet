@@ -1219,47 +1219,6 @@ function init$5() {
 
 function _init$5() {
   _init$5 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
-    var _yield$import, TorusConnector;
-
-    return runtime_1.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return import('@web3-react/torus-connector');
-
-          case 2:
-            _yield$import = _context.sent;
-            TorusConnector = _yield$import.TorusConnector;
-            return _context.abrupt("return", {
-              web3ReactConnector: function web3ReactConnector(_ref) {
-                var chainId = _ref.chainId,
-                    initOptions = _ref.initOptions,
-                    constructorOptions = _ref.constructorOptions;
-                return new TorusConnector({
-                  chainId: chainId,
-                  constructorOptions: constructorOptions,
-                  initOptions: initOptions
-                });
-              }
-            });
-
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _init$5.apply(this, arguments);
-}
-
-function init$6() {
-  return _init$6.apply(this, arguments);
-}
-
-function _init$6() {
-  _init$6 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
     var _yield$import, UserRejectedRequestError, WalletConnectConnector;
 
     return runtime_1.wrap(function _callee$(_context) {
@@ -1309,15 +1268,15 @@ function _init$6() {
       }
     }, _callee);
   }));
+  return _init$5.apply(this, arguments);
+}
+
+function init$6() {
   return _init$6.apply(this, arguments);
 }
 
-function init$7() {
-  return _init$7.apply(this, arguments);
-}
-
-function _init$7() {
-  _init$7 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
+function _init$6() {
+  _init$6 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
     var _yield$import, WalletLinkConnector;
 
     return runtime_1.wrap(function _callee$(_context) {
@@ -1360,19 +1319,19 @@ function _init$7() {
       }
     }, _callee);
   }));
-  return _init$7.apply(this, arguments);
+  return _init$6.apply(this, arguments);
 }
 
 // on the hardware wallet. This should eventually be made dynamic.
 
 var LEDGER_LIVE_PATH = "m/44'/60'/0'/0";
 var POLLING_INTERVAL = 12000;
-function init$8() {
-  return _init$8.apply(this, arguments);
+function init$7() {
+  return _init$7.apply(this, arguments);
 }
 
-function _init$8() {
-  _init$8 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
+function _init$7() {
+  _init$7 = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee() {
     var _yield$import, LedgerConnector;
 
     return runtime_1.wrap(function _callee$(_context) {
@@ -1410,7 +1369,7 @@ function _init$8() {
       }
     }, _callee);
   }));
-  return _init$8.apply(this, arguments);
+  return _init$7.apply(this, arguments);
 }
 
 function getConnectors(initsOrConfigs) {
@@ -1424,10 +1383,9 @@ function getConnectors(initsOrConfigs) {
     injected: [init$2, null],
     portis: [init$3, null],
     provided: [init$4, null],
-    torus: [init$5, null],
-    walletconnect: [init$6, null],
-    walletlink: [init$7, null],
-    ledger: [init$8, null]
+    walletconnect: [init$5, null],
+    walletlink: [init$6, null],
+    ledger: [init$7, null]
   };
 
   for (var _i = 0, _Object$entries = Object.entries(initsOrConfigs); _i < _Object$entries.length; _i++) {
@@ -1523,6 +1481,11 @@ var HECO = {
 var CRO = {
   name: 'CRONOS',
   symbol: 'CRO',
+  decimals: 18
+};
+var KAVA = {
+  name: 'KAVA',
+  symbol: 'KAVA',
   decimals: 18
 };
 var CHAIN_INFORMATION = /*#__PURE__*/new Map([[1, {
@@ -1779,6 +1742,14 @@ var CHAIN_INFORMATION = /*#__PURE__*/new Map([[1, {
   fullName: 'Cronos Chain',
   shortName: 'Cronos',
   explorerUrl: "https://cronoscan.com",
+  testnet: false
+}], [2222, {
+  id: 2222,
+  nativeCurrency: KAVA,
+  type: 'main',
+  fullName: 'Kava EVM',
+  shortName: 'KAVA',
+  explorerUrl: "https://explorer.kava.io",
   testnet: false
 }]]);
 /**
@@ -2651,6 +2622,16 @@ function UseWalletProvider(_ref) {
     };
   }, [account, ethereum]);
   var wallet = useMemo(function () {
+    var networkName = 'Unknown';
+
+    try {
+      var _chains$getChainInfor;
+
+      networkName = (_chains$getChainInfor = getChainInformation(chainId)) == null ? void 0 : _chains$getChainInfor.type;
+    } catch (e) {
+      console.log('Unsupported network deteƒcted');
+    }
+
     return {
       _web3ReactContext: web3ReactContext,
       account: account || null,
@@ -2664,7 +2645,7 @@ function UseWalletProvider(_ref) {
       isConnected: function isConnected() {
         return status === 'connected';
       },
-      networkName: getChainInformation(chainId).type,
+      networkName: networkName,
       providerInfo: connector ? getProviderFromUseWalletId(connector) : getProviderFromUseWalletId('unknown'),
       reset: reset,
       status: status,
